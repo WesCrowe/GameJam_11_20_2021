@@ -8,11 +8,13 @@ public class RandomCode : MonoBehaviour
     public GameObject theCode;
     public GameObject memorize;
     public GameObject getReady;
+    public Text timer;
     Text codeText;
     int code;
     int num1;
     int num2;
     int num3;
+    int num4;
     public Button first;
     public Text firstText;
     public Button second;
@@ -26,8 +28,13 @@ public class RandomCode : MonoBehaviour
 
     void Start()
     {
-        Time.fixedDeltaTime = 1;
+        Time.fixedDeltaTime = 1f;
         prepare();
+    }
+
+    private void Update()
+    {
+        timer.text = (60-(Time.time-5)).ToString();
     }
     private void FixedUpdate()
     {
@@ -42,6 +49,7 @@ public class RandomCode : MonoBehaviour
             theCode.SetActive(false);
             memorize.SetActive(false);
             playing = true;
+            timer.gameObject.SetActive(true);
         }
         if (playing)
         {
@@ -54,6 +62,7 @@ public class RandomCode : MonoBehaviour
     {
         theCode.SetActive(false);
         memorize.gameObject.SetActive(false);
+        timer.gameObject.SetActive(false);
         first.gameObject.SetActive(false);
         second.gameObject.SetActive(false);
         third.gameObject.SetActive(false);
@@ -62,14 +71,15 @@ public class RandomCode : MonoBehaviour
 
     public void tryWin(Text buttonText)
     {
-        if(buttonText = codeText)
+        //bug: always wins
+        if(buttonText == codeText)
         {
             print("you win!");
         }
         else
         {
             lives--;
-            print(lives);
+            print("lives: " + lives);
         }
     }
 
@@ -83,7 +93,7 @@ public class RandomCode : MonoBehaviour
     }
     private void setButtons()
     {
-        int pickRand = Random.Range(1, 4);
+        int pickRand = Random.Range(1, 8);
         first.gameObject.SetActive(true);
         second.gameObject.SetActive(true);
         third.gameObject.SetActive(true);
@@ -104,96 +114,133 @@ public class RandomCode : MonoBehaviour
         {
             trueFourth();
         }
-        //Might make a case where Set lies
+        else
+        {
+            lie();
+        }
     }
+
+    private int getRandom()
+    {
+        return Random.Range(-100, 100);
+    }
+
+
 
     void trueFirst()
     {
         firstText.text = code.ToString();
-        num1 = Random.Range(-10, 10);
+        num1 = getRandom();
         while(num1 == code)
         {
-            num1 = Random.Range(-10, 10);
+            num1 = getRandom();
         }
         secondText.text = num1.ToString();
-        num2 = Random.Range(-10, 10);
+        num2 = getRandom();
         while (num2 == code || num2 == num1)
         {
             num2 = Random.Range(-10, 10);
         }
         thirdText.text = num2.ToString();
-        num3 = Random.Range(-10, 10);
+        num3 = getRandom();
         while (num3 == code || num3 == num1 || num3 == num2)
         {
-            num3 = Random.Range(-10, 10);
+            num3 = getRandom();
         }
         fourthText.text = num3.ToString();
     }
 
     void trueSecond()
     {
-        num1 = Random.Range(-10, 10);
+        num1 = getRandom();
         firstText.text = num1.ToString();
         while (num1 == code)
         {
-            num1 = Random.Range(-10, 10);
+            num1 = getRandom();
         }
         secondText.text = code.ToString();
-        num2 = Random.Range(-10, 10);
+        num2 = getRandom();
         while (num2 == code || num2 == num1)
         {
-            num2 = Random.Range(-10, 10);
+            num2 = getRandom();
         }
         thirdText.text = num2.ToString();
-        num3 = Random.Range(-10, 10);
+        num3 = getRandom();
         while (num3 == code || num3 == num1 || num3 == num2)
         {
-            num3 = Random.Range(-10, 10);
+            num3 = getRandom();
         }
         fourthText.text = num3.ToString();
     }
     void trueThird()
     {
-        num1 = Random.Range(-10, 10);
+        num1 = getRandom();
         firstText.text = num1.ToString();
         while (num1 == code)
         {
-            num1 = Random.Range(-10, 10);
+            num1 = getRandom();
         }
-        num2 = Random.Range(-10, 10);
+        num2 = getRandom();
         while (num2 == code || num2 == num1)
         {
-            num2 = Random.Range(-10, 10);
+            num2 = getRandom();
         }
         secondText.text = num2.ToString();
         thirdText.text = code.ToString();
-        num3 = Random.Range(-10, 10);
+        num3 = getRandom();
         while (num3 == code || num3 == num1 || num3 == num2)
         {
-            num3 = Random.Range(-10, 10);
+            num3 = getRandom();
         }
         fourthText.text = num3.ToString();
     }
     void trueFourth()
     {
-        num1 = Random.Range(-10, 10);
+        num1 = getRandom();
         firstText.text = num1.ToString();
         while (num1 == code)
         {
-            num1 = Random.Range(-10, 10);
+            num1 = getRandom();
         }
-        num2 = Random.Range(-10, 10);
+        num2 = getRandom();
         while (num2 == code || num2 == num1)
         {
-            num2 = Random.Range(-10, 10);
+            num2 = getRandom();
         }
         secondText.text = num2.ToString();
-        num3 = Random.Range(-10, 10);
+        num3 = getRandom();
         while (num3 == code || num3 == num1 || num3 == num2)
         {
-            num3 = Random.Range(-10, 10);
+            num3 = getRandom();
         }
         thirdText.text = num3.ToString();
         fourthText.text = code.ToString();
+    }
+    void lie()
+    {
+        num1 = getRandom();
+        firstText.text = num1.ToString();
+        while (num1 == code)
+        {
+            num1 = getRandom();
+        }
+        num2 = getRandom();
+        while (num2 == code || num2 == num1)
+        {
+            num2 = getRandom();
+        }
+        secondText.text = num2.ToString();
+        num3 = getRandom();
+        while (num3 == code || num3 == num1 || num3 == num2)
+        {
+            num3 = getRandom();
+        }
+        thirdText.text = num3.ToString();
+        num4 = getRandom();
+        while (num4 == code || num4 == num1 || num4 == num2 || num4 == num3)
+        {
+            num4 = getRandom();
+        }
+        fourthText.text = num4.ToString();
     }
 }
