@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class RandomCode : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class RandomCode : MonoBehaviour
     int num2;
     int num3;
     int num4;
+    public Text livesNum;
     public Button first;
     public Text firstText;
     public Button second;
@@ -25,37 +27,65 @@ public class RandomCode : MonoBehaviour
     public Text fourthText;
     int lives;
     bool playing;
+    bool won;
+    bool lost;
+    public GameObject setSmirk;
+    public GameObject setAngry;
+    public GameObject winText;
+    public GameObject failText;
+    public Button playAgain;
+    float gameTime;
 
     void Start()
     {
         Time.fixedDeltaTime = 1f;
+        lives = 3;
         prepare();
+        won = false;
+        lost = false;
     }
 
     private void Update()
     {
         timer.text = (60-(Time.time-5)).ToString();
+        livesNum.text = lives.ToString();
+        if(lives == 1)
+        {
+            lost = true;
+        }
     }
     private void FixedUpdate()
     {
-        if (Time.time == 3)
+        gameTime++;
+        if (won)
         {
-            getReady.SetActive(false);
-            loadFirst();
-            lives = 3;
+            win();
         }
-        if(Time.time == 5)
+        else if (lost)
         {
-            theCode.SetActive(false);
-            memorize.SetActive(false);
-            playing = true;
-            timer.gameObject.SetActive(true);
+            lose();
         }
-        if (playing)
+        else
         {
-            setButtons();
+            if (gameTime == 3)
+            {
+                getReady.SetActive(false);
+                loadFirst();
+                lives = 3;
+            }
+            if (gameTime == 5)
+            {
+                theCode.SetActive(false);
+                memorize.SetActive(false);
+                playing = true;
+                timer.gameObject.SetActive(true);
+                setButtons();
+            }
+            if (playing)
+            {
+                shuffleButtons();
+            }
         }
-        
     }
 
     void prepare()
@@ -67,20 +97,72 @@ public class RandomCode : MonoBehaviour
         second.gameObject.SetActive(false);
         third.gameObject.SetActive(false);
         fourth.gameObject.SetActive(false);
+        winText.SetActive(false);
+        failText.SetActive(false);
+        setAngry.SetActive(true);
+        setSmirk.SetActive(false);
+        playAgain.gameObject.SetActive(false);
+    }
+
+    public void win()
+    {
+        won = true;
+        playing = false;
+        clearScreen();
+        winText.SetActive(true);
+        setAngry.SetActive(false);
+        setSmirk.SetActive(true);
+    }
+
+    public void lose()
+    {
+        lost = true;
+        playing = false;
+        clearScreen();
+        failText.SetActive(true);
+        setAngry.SetActive(true);
+        playAgain.gameObject.SetActive(true);
+    }
+
+    public void clearScreen(){
+        theCode.SetActive(false);
+        memorize.gameObject.SetActive(false);
+        timer.gameObject.SetActive(false);
+        first.gameObject.SetActive(false);
+        second.gameObject.SetActive(false);
+        third.gameObject.SetActive(false);
+        fourth.gameObject.SetActive(false);
     }
 
     public void tryWin(Text buttonText)
     {
-        //bug: always wins
-        if(buttonText == codeText)
+        //bug: always looses
+        if (buttonText.text == codeText.text)
         {
-            print("you win!");
+            win();
         }
         else
         {
             lives--;
-            print("lives: " + lives);
         }
+    }
+
+    public void playAgainClick()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        gameTime = gameTime - Time.timeSinceLevelLoad;
+    }
+
+    public void shuffleButtons()
+    {
+        Vector3 rand1 = new Vector3((float)Random.Range(305, 931), (float)Random.Range(25, 394), 0f);
+        Vector3 rand2 = new Vector3((float)Random.Range(305, 931), (float)Random.Range(25, 394), 0f);
+        Vector3 rand3 = new Vector3((float)Random.Range(305, 931), (float)Random.Range(25, 394), 0f);
+        Vector3 rand4 = new Vector3((float)Random.Range(305, 931), (float)Random.Range(25, 394), 0f);
+        first.transform.position = rand1;
+        second.transform.position = rand2;
+        third.transform.position = rand3;
+        fourth.transform.position = rand4;
     }
 
     private void loadFirst()
