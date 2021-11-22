@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class moveAgain : MonoBehaviour
 {
-    private void OnTriggerEnter2D(Collision collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.tag == "DontOverlay")
         {

@@ -26,7 +26,7 @@ public class RandomCode : MonoBehaviour
     public Text thirdText;
     public Button fourth;
     public Text fourthText;
-    Button[] buttons;
+    Button[] buttons = new Button[4];
     int lives;
     bool playing;
     bool won;
@@ -40,7 +40,7 @@ public class RandomCode : MonoBehaviour
     public Texture2D cursor;
     Vector3 rand1, rand2, rand3, rand4;
     RectTransform firstRect, secondRect, thirdRect, fourthRect;
-    RectTransform[] rects;
+    RectTransform[] rects = new RectTransform[4];
 
     void Start()
     {
@@ -199,6 +199,7 @@ public class RandomCode : MonoBehaviour
     void makeButtonArray()
     {
         buttons[0] = first;
+        //print(first.)
         buttons[1] = second;
         buttons[2] = third;
         buttons[3] = fourth;
@@ -214,25 +215,35 @@ public class RandomCode : MonoBehaviour
 
     public void reAdjustButtons()
     {
+        bool overlap = false;
         for(int i = 0; i < 3; i++)
         {
+            //print("i " + i);
             for(int j = i+1; j < 4; j++)
             {
-                if(rectOverlaps(rects[i], rects[j])){
+                //print("j " + j);
+                if (rectOverlaps(rects[i], rects[j])){
+                    overlap = true;
                     moveButton(buttons[j]);
+                    //print(rectOverlaps(rects[i], rects[j]));
                 }
+                //print("after if");
+
             }
         }
+        print(overlap);
     }
 
     void moveButton(Button but)
     {
        Vector3 burner = new Vector3((float)Random.Range(305, 931), (float)Random.Range(25, 394), 0f);
        but.transform.position = burner;
+       reAdjustButtons();
     }
 
     bool rectOverlaps(RectTransform rectTrans1, RectTransform rectTrans2)
     {
+        print("overlap");
         Rect rect1 = new Rect(rectTrans1.localPosition.x, rectTrans1.localPosition.y, rectTrans1.rect.width, rectTrans1.rect.height);
         Rect rect2 = new Rect(rectTrans2.localPosition.x, rectTrans2.localPosition.y, rectTrans2.rect.width, rectTrans2.rect.height);
 
