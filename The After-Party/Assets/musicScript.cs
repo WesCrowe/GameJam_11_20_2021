@@ -21,7 +21,7 @@ public class musicScript : MonoBehaviour
     void Update()
     {
         //musicPlaying = musicPlayer.isPlaying;
-        print(timer.activeInHierarchy);
+        //print(timer.activeInHierarchy);
         if (timer.activeInHierarchy && !musicPlaying )
         {
             musicPlaying = true;
@@ -30,7 +30,7 @@ public class musicScript : MonoBehaviour
         }
         else
         {
-            musicPlayer.Stop();
+            //musicPlayer.Stop();
             musicPlaying = false;
         }
     }
