@@ -4,9 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+[RequireComponent(typeof(AudioSource))]
 public class RandomCode : MonoBehaviour
 {
-    int playerCount;
+    //int playerCount;
     public GameObject theCode;
     public GameObject memorize;
     public GameObject getReady;
@@ -41,10 +42,20 @@ public class RandomCode : MonoBehaviour
     Vector3 rand1, rand2, rand3, rand4;
     RectTransform firstRect, secondRect, thirdRect, fourthRect;
     RectTransform[] rects = new RectTransform[4];
+    public AudioClip winSound;
+    public AudioClip failSound;
+    public AudioClip music;
+    public AudioClip drums;
+    public AudioClip badClick;
+    AudioSource audioZource;
+    AudioSource musicPlayer;
+    GameObject musicObject;
+    bool winSoundPlayed;
+    bool failSoundPlayed;
 
     void Start()
     {
-        if (PlayerPrefs.HasKey("PlayerCount"))
+        /*if (PlayerPrefs.HasKey("PlayerCount"))
         {
             playerCount = PlayerPrefs.GetInt("PlayerCount");
         }
@@ -53,7 +64,9 @@ public class RandomCode : MonoBehaviour
             playerCount = 1;
             Vector2 cursorOffset = new Vector2(cursor.width / 2, cursor.height / 2);
             Cursor.SetCursor(cursor, cursorOffset, CursorMode.Auto);
-        }
+        }*/
+        Vector2 cursorOffset = new Vector2(cursor.width / 2, cursor.height / 2);
+        Cursor.SetCursor(cursor, cursorOffset, CursorMode.Auto);
         Time.fixedDeltaTime = 1f;
         lives = 3;
         prepare();
@@ -65,6 +78,8 @@ public class RandomCode : MonoBehaviour
         thirdRect = third.GetComponent<RectTransform>();
         fourthRect = fourth.GetComponent<RectTransform>();
         makeRectArray();
+        audioZource = GetComponent<AudioSource>();
+        //musicPlayer = musicObject.GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -81,10 +96,24 @@ public class RandomCode : MonoBehaviour
         gameTime++;
         if (won)
         {
+            if (!winSoundPlayed)
+            {
+                winSoundPlayed = true;
+                //musicPlayer.Stop();
+                audioZource.clip = winSound;
+                audioZource.Play();
+            }
             win();
         }
         else if (lost)
         {
+            if (!failSoundPlayed)
+            {
+                failSoundPlayed = true;
+                //musicPlayer.Stop();
+                audioZource.clip = failSound;
+                audioZource.Play();
+            }
             lose();
         }
         else
@@ -92,6 +121,13 @@ public class RandomCode : MonoBehaviour
             if(gameTime == 65)
             {
                 lose();
+            }
+            if(gameTime == 1)
+            {
+                audioZource.clip = drums;
+                audioZource.Play();
+                winSoundPlayed = false;
+                failSoundPlayed = false;
             }
             if (gameTime == 3)
             {
@@ -106,6 +142,8 @@ public class RandomCode : MonoBehaviour
                 playing = true;
                 timer.gameObject.SetActive(true);
                 setButtons();
+                musicPlayer.clip = music;
+                musicPlayer.Play();
             }
             if (playing)
             {
@@ -174,6 +212,8 @@ public class RandomCode : MonoBehaviour
         else
         {
             lives--;
+            audioZource.clip = badClick;
+            audioZource.Play();
         }
     }
 
@@ -228,7 +268,6 @@ public class RandomCode : MonoBehaviour
                     //print(rectOverlaps(rects[i], rects[j]));
                 }
                 //print("after if");
-
             }
         }
         print(overlap);
