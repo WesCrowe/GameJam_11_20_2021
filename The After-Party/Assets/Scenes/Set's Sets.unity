@@ -405,7 +405,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Memorize this
+  m_Text: 'Remember this:'
 --- !u!222 &438439395
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1211,6 +1211,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 652930063}
     m_Modifications:
+    - target: {fileID: 589364975500308804, guid: 9bc310c10291bb34c84d525937ad68d7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1966336499}
+    - target: {fileID: 589364975500308804, guid: 9bc310c10291bb34c84d525937ad68d7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: tryWin
+      objectReference: {fileID: 0}
     - target: {fileID: 589364975500308805, guid: 9bc310c10291bb34c84d525937ad68d7, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1583,6 +1591,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 652930063}
     m_Modifications:
+    - target: {fileID: 589364975500308804, guid: 9bc310c10291bb34c84d525937ad68d7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1966336499}
+    - target: {fileID: 589364975500308804, guid: 9bc310c10291bb34c84d525937ad68d7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: tryWin
+      objectReference: {fileID: 0}
     - target: {fileID: 589364975500308805, guid: 9bc310c10291bb34c84d525937ad68d7, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1688,6 +1704,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 652930063}
     m_Modifications:
+    - target: {fileID: 589364975500308804, guid: 9bc310c10291bb34c84d525937ad68d7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1966336499}
+    - target: {fileID: 589364975500308804, guid: 9bc310c10291bb34c84d525937ad68d7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: tryWin
+      objectReference: {fileID: 0}
     - target: {fileID: 589364975500308805, guid: 9bc310c10291bb34c84d525937ad68d7, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1895,6 +1919,7 @@ MonoBehaviour:
   winText: {fileID: 1034378463}
   failText: {fileID: 1109181741}
   playAgain: {fileID: 1016989377}
+  cursor: {fileID: 2800000, guid: 918917d504e3391498ed257deede2d0c, type: 3}
 --- !u!1 &2010100341
 GameObject:
   m_ObjectHideFlags: 0

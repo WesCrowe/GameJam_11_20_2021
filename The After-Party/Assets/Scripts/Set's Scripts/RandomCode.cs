@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class RandomCode : MonoBehaviour
 {
+    int playerCount;
     public GameObject theCode;
     public GameObject memorize;
     public GameObject getReady;
@@ -25,6 +26,7 @@ public class RandomCode : MonoBehaviour
     public Text thirdText;
     public Button fourth;
     public Text fourthText;
+    Button[] buttons;
     int lives;
     bool playing;
     bool won;
@@ -35,21 +37,41 @@ public class RandomCode : MonoBehaviour
     public GameObject failText;
     public Button playAgain;
     float gameTime;
+    public Texture2D cursor;
+    Vector3 rand1, rand2, rand3, rand4;
+    RectTransform firstRect, secondRect, thirdRect, fourthRect;
+    RectTransform[] rects;
 
     void Start()
     {
+        if (PlayerPrefs.HasKey("PlayerCount"))
+        {
+            playerCount = PlayerPrefs.GetInt("PlayerCount");
+        }
+        else
+        {
+            playerCount = 1;
+            Vector2 cursorOffset = new Vector2(cursor.width / 2, cursor.height / 2);
+            Cursor.SetCursor(cursor, cursorOffset, CursorMode.Auto);
+        }
         Time.fixedDeltaTime = 1f;
         lives = 3;
         prepare();
         won = false;
         lost = false;
+        makeButtonArray();
+        firstRect = first.GetComponent<RectTransform>();
+        secondRect = second.GetComponent<RectTransform>();
+        thirdRect = third.GetComponent<RectTransform>();
+        fourthRect = fourth.GetComponent<RectTransform>();
+        makeRectArray();
     }
 
     private void Update()
     {
         timer.text = (60-(Time.time-5)).ToString();
         livesNum.text = lives.ToString();
-        if(lives == 1)
+        if(lives == 0)
         {
             lost = true;
         }
@@ -67,6 +89,10 @@ public class RandomCode : MonoBehaviour
         }
         else
         {
+            if(gameTime == 65)
+            {
+                lose();
+            }
             if (gameTime == 3)
             {
                 getReady.SetActive(false);
@@ -83,6 +109,7 @@ public class RandomCode : MonoBehaviour
             }
             if (playing)
             {
+                setButtons();
                 shuffleButtons();
             }
         }
@@ -112,6 +139,7 @@ public class RandomCode : MonoBehaviour
         winText.SetActive(true);
         setAngry.SetActive(false);
         setSmirk.SetActive(true);
+        playAgain.gameObject.SetActive(true);
     }
 
     public void lose()
@@ -137,6 +165,8 @@ public class RandomCode : MonoBehaviour
     public void tryWin(Text buttonText)
     {
         //bug: always looses
+        print("button: " + buttonText.text);
+        print(codeText.text);
         if (buttonText.text == codeText.text)
         {
             win();
@@ -155,24 +185,69 @@ public class RandomCode : MonoBehaviour
 
     public void shuffleButtons()
     {
-        Vector3 rand1 = new Vector3((float)Random.Range(305, 931), (float)Random.Range(25, 394), 0f);
-        Vector3 rand2 = new Vector3((float)Random.Range(305, 931), (float)Random.Range(25, 394), 0f);
-        Vector3 rand3 = new Vector3((float)Random.Range(305, 931), (float)Random.Range(25, 394), 0f);
-        Vector3 rand4 = new Vector3((float)Random.Range(305, 931), (float)Random.Range(25, 394), 0f);
+        rand1 = new Vector3((float)Random.Range(305, 931), (float)Random.Range(25, 394), 0f);
+        rand2 = new Vector3((float)Random.Range(305, 931), (float)Random.Range(25, 394), 0f);
+        rand3 = new Vector3((float)Random.Range(305, 931), (float)Random.Range(25, 394), 0f);
+        rand4 = new Vector3((float)Random.Range(305, 931), (float)Random.Range(25, 394), 0f);
         first.transform.position = rand1;
         second.transform.position = rand2;
         third.transform.position = rand3;
         fourth.transform.position = rand4;
+        reAdjustButtons();
+    }
+
+    void makeButtonArray()
+    {
+        buttons[0] = first;
+        buttons[1] = second;
+        buttons[2] = third;
+        buttons[3] = fourth;
+    }
+
+    void makeRectArray()
+    {
+        rects[0] = firstRect;
+        rects[1] = secondRect;
+        rects[2] = thirdRect;
+        rects[3] = fourthRect;
+    }
+
+    public void reAdjustButtons()
+    {
+        for(int i = 0; i < 3; i++)
+        {
+            for(int j = i+1; j < 4; j++)
+            {
+                if(rectOverlaps(rects[i], rects[j])){
+                    moveButton(buttons[j]);
+                }
+            }
+        }
+    }
+
+    void moveButton(Button but)
+    {
+       Vector3 burner = new Vector3((float)Random.Range(305, 931), (float)Random.Range(25, 394), 0f);
+       but.transform.position = burner;
+    }
+
+    bool rectOverlaps(RectTransform rectTrans1, RectTransform rectTrans2)
+    {
+        Rect rect1 = new Rect(rectTrans1.localPosition.x, rectTrans1.localPosition.y, rectTrans1.rect.width, rectTrans1.rect.height);
+        Rect rect2 = new Rect(rectTrans2.localPosition.x, rectTrans2.localPosition.y, rectTrans2.rect.width, rectTrans2.rect.height);
+
+        return rect1.Overlaps(rect2);
     }
 
     private void loadFirst()
     {
         codeText = theCode.GetComponent<Text>();
-        code = Random.Range(-10, 10);
+        code = Random.Range(-100, 100);
         codeText.text = code.ToString();
         codeText.gameObject.SetActive(true);
         memorize.gameObject.SetActive(true);
     }
+
     private void setButtons()
     {
         int pickRand = Random.Range(1, 8);
