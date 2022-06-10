@@ -155,7 +155,7 @@ public class RandomCode : MonoBehaviour
 
     public void returnToMenu()
     {
-        SceneManager.LoadScene(SceneManager.GetSceneAt(0).name);
+        SceneManager.LoadScene("Main Menu");
     }
     void prepare()
     {

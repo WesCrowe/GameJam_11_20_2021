@@ -1240,6 +1240,10 @@ PrefabInstance:
       propertyPath: playerCountSlider
       value: 
       objectReference: {fileID: 1946555632}
+    - target: {fileID: 7841267159131065229, guid: b4e02e76b3b11814399a34fc8b35e676, type: 3}
+      propertyPath: levels.Array.data[2]
+      value: OsirisLecture
+      objectReference: {fileID: 0}
     - target: {fileID: 7841267159131065231, guid: b4e02e76b3b11814399a34fc8b35e676, type: 3}
       propertyPath: eventManager
       value: 

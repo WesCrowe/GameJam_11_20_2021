@@ -5,7 +5,7 @@ using UnityEngine;
 public class musicScript : MonoBehaviour
 {
     AudioSource musicPlayer;
-    GameObject musicObject;
+    public GameObject musicObject;
     public AudioClip music;
     bool playingGame;
     bool musicPlaying;
